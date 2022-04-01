@@ -2,10 +2,13 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <div>
-        <h1>Listado Pacientes <span>Consultorio</span></h1>
+   
+        <h1 className=' font-black text-5xl text-center md:w-2/3 mx-auto'>
+            Listado Pacientes {''}
+             <span className=' text-green-400'>Consultorio</span>
+        </h1>
 
-    </div>
+  
   )
 }
 
