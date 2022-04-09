@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import Error from "./Error";
 
 const Formulario = ({setPacientes, pacientes}) => {
+  const getId = () => {
+    const random = Math.random().toString(36).substring(2);
+    const fecha = Date.now().toString(36);
+
+    return random +  fecha
+  } 
   const [nombre, setNombre] = useState("");
   const [doctor, setDoctor] = useState("");
   const [email, setEmail] = useState("");
@@ -25,7 +31,8 @@ const Formulario = ({setPacientes, pacientes}) => {
         doctor,
          email, 
          fecha, 
-         diagnostico
+         diagnostico,
+         id: getId()
       }
       setPacientes([...pacientes, paciente]);
 

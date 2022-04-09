@@ -8,6 +8,8 @@ import ListaPacientes from './components/ListaPacientes'
 function App() {
  
   const [pacientes, setPacientes] = useState([]);
+  const [paciente, setPaciente] = useState({});
+
    
 
 
@@ -23,6 +25,7 @@ function App() {
           />
           <ListaPacientes 
             pacientes={pacientes}
+            setPaciente={setPaciente}
           />
           </div>
     </div>
