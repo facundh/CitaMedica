@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Error from "./Error";
 
-const Formulario = ({setPacientes, pacientes}) => {
+const Formulario = ({setPacientes, pacientes, paciente, setPaciente}) => {
   const getId = () => {
     const random = Math.random().toString(36).substring(2);
     const fecha = Date.now().toString(36);
@@ -14,6 +14,18 @@ const Formulario = ({setPacientes, pacientes}) => {
   const [fecha, setFecha] = useState("");
   const [diagnostico, setDiagnostico] = useState("");
 
+  useEffect(() => {
+
+      if(Object.keys(pacientes).length > 0 ) {
+        setNombre(paciente.nombre);
+        setDoctor(paciente.doctor);
+        setEmail(paciente.email);
+        setFecha(paciente.fecha);
+        setDiagnostico(paciente.diagnostico);
+      }
+ 
+  }, [paciente]);
+
   const [error, setError] = useState(false);
 
   const handleSubmit = (e) => {
@@ -21,28 +33,44 @@ const Formulario = ({setPacientes, pacientes}) => {
 
     // Validaciòn formulario
     if([nombre, doctor, email, fecha, diagnostico].includes("")) {
-      console.log('Hay al menos un campo vacio');
-      setError(true);
-      return
+          console.log('Hay al menos un campo vacio');
+          setError(true);
+          return
     } else {
 
-      const paciente = {
-        nombre, 
-        doctor,
-         email, 
-         fecha, 
-         diagnostico,
-         id: getId()
+      setError(false);
+     
+      const pacienteObj = {
+          nombre, 
+          doctor,
+          email, 
+          fecha, 
+          diagnostico
       }
-      setPacientes([...pacientes, paciente]);
 
+      if( paciente.id ){
+       
+         pacienteObj.id = paciente.id;
+
+         const pacientesActualizados = pacientes.map( pacienteState =>  pacienteState.id === paciente.id ? pacienteObj : pacienteState)
+
+         setPacientes(pacientesActualizados);
+
+         setPaciente({});
+
+      } else {
+        pacienteObj.id =  getId();
+        setPacientes( [ ...pacientes, pacienteObj ] );
+      }
+
+
+      // Reinicio Formulario
       setNombre('');
       setDoctor('');
       setEmail('');
       setFecha('');
       setDiagnostico('');
-    }
-   ;
+    };
   };
   return (
     <div className=" md:w-1/2 lg:w-2/5">
@@ -140,7 +168,7 @@ const Formulario = ({setPacientes, pacientes}) => {
         <input
           type="submit"
           className=" font-bold text-center bg-green-400 w-full p-3 uppercase hover:bg-green-500 cursor-pointer transition-opacity"
-          value="Agregar Paciente"
+          value={paciente.id ? 'Editar paciente' : 'Agregar paciente'}
         />
       </form>
     </div>
